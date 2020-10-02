@@ -112,6 +112,41 @@ def quad_check(rows, cols, values, sudoku):
 				remov(pos[j][0], pos[j][1], values, j+1, rows, cols)
 				flag = 1
 	return flag
+	
+#Function to check if the given sudoku is valid or not
+def check_valid_sudoku(rows, cols, values, sudoku):
+	flag = 0
+	for i in range(rows):
+		st_col = (i-st_row)*int(rows**0.5)
+		count = [0]*rows
+		pos = [-1]*rows
+		st_row = int(rows**0.5)*(i//int(rows**0.5))
+		for j in range(st_row, st_row+int(rows**0.5)):
+			for k in range(st_col, st_col+int(rows**0.5)):
+				for l in range(rows):
+					if values[j][k][l]:
+						count[values[j][k][l]-1] += 1
+						pos[values[j][k][l]-1] = [j, k]
+						flag = 1
+		for j in range(rows):
+			if count[j] == 1:
+                count[values[j][k][l]-1] += 1 
+				sudoku[pos[j][0]][pos[j][1]] = j+1
+				remov(pos[j][0], pos[j][1], values, j+1, rows, cols)
+				flag = 1
+	    for j in range(rows):
+			if count[j] == 1:
+				sudoku[pos[j][0]][pos[j][1]] = j+1
+				count[values[j][k][l]-1] += 1
+				remov(pos[j][0], pos[j][1], values, j+1, rows, cols)
+				flag = 1
+		for l in range(rows):
+			if values[j][k][l]:
+				count[values[j][k][l]-1] += 1
+				pos[values[j][k][l]-1] = [j, k]
+				flag = 1
+	return flag
+	
 
 #Function to find numbers(1 to 9) which share common blocks in a row or a column based on typ(0 for row and 1 for column) and remove all other numbers in those blocks if possible
 def special2(rows, values, pos, i, typ):
